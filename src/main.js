@@ -23,22 +23,25 @@ const Future = require ('fluture');
 
 
 const detectText = buffer => Future ((reject, resolve) => {
-    const params = {
+
+    textract.detectDocumentText ({
         Document: {
             Bytes: buffer
         }
-    };
-
-    textract.detectDocumentText (params, (err, data) =>
-        err ? reject (err) : resolve (data));
+    }, (err, res) =>
+        err ? reject (err) : resolve (res));
 });
 
+detectText(fs.readFileSync('../data/IMG_0171.JPG')).fork(console.error, console.log);
 
-fs.readFile ('../data/IMG_0171.JPG', (err, data) => {
-    if (err) {
-        console.error (err);
-    } else {
-        const future = detectText (data);
-        future.fork(console.error, console.log);
-    }
-});
+
+// const readFile = path => Future ((reject, resolve) => {
+//     fs.readFile (path, (err, res) => err ? reject (err) : resolve (res));
+// });
+//
+// const future = readFile ('../data/IMG_0171.JPG');
+//
+// const result = S.chain (detectText) (future);
+//
+//
+// result.fork (err => console.error(err.message), json => console.log(JSON.stringify(json)));
