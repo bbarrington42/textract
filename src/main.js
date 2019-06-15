@@ -13,16 +13,13 @@ const Future = require ('fluture');
 const fs = require ('fs');
 const {extractText, getLines} = require ('../lib/extract');
 
-const json = JSON.parse(fs.readFileSync('../data/example.json', 'utf8'));
+// Futurized asynchronous read file
+const readFile = path => Future((reject, resolve) => {
+   fs.readFile(path, (err, data) => err ? reject(err) : resolve(data));
+});
 
+const image = readFile('../data/IMG_0171.JPG');
 
-const lines = getLines(json);
+const lines = Future.chain(S.map(getLines)(extractText))(image);
 
-console.log(lines);
-
-
-// const text = extractText(fs.readFileSync('../data/IMG_0171.JPG'));
-//
-//
-//
-// text.fork (console.error, data => console.log(JSON.stringify(data)));
+Future.fork(console.error, console.log, lines);
