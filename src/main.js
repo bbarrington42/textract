@@ -11,11 +11,18 @@ const S = create ({
 
 const Future = require ('fluture');
 const fs = require ('fs');
-const {extractText} = require ('../lib/extract');
+const {extractText, getLines} = require ('../lib/extract');
+
+const json = JSON.parse(fs.readFileSync('../data/example.json', 'utf8'));
 
 
-const text = extractText(fs.readFileSync('../data/IMG_0171.JPG'));
+const lines = getLines(json);
+
+console.log(lines);
 
 
-
-text.fork (console.error, console.log);
+// const text = extractText(fs.readFileSync('../data/IMG_0171.JPG'));
+//
+//
+//
+// text.fork (console.error, data => console.log(JSON.stringify(data)));
