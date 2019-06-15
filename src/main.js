@@ -20,6 +20,7 @@ const readFile = path => Future((reject, resolve) => {
 
 const image = readFile('../data/IMG_0171.JPG');
 
-const lines = Future.chain(S.map(getLines)(extractText))(image);
+const lines = S.pipe([Future.chain(extractText), S.map(getLines)])(image);
+
 
 Future.fork(console.error, console.log, lines);
